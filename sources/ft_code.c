@@ -27,6 +27,24 @@ void	too_much_help(t_env *env)
 	}
 }
 
+void	zoom(t_env *env, int keycode)
+{
+	if (keycode == 24)
+		env->zoom += 10;
+	else if (keycode == 27)
+		env->zoom -= 10;
+	draw_frct(env);
+}
+
+void	var_it(t_env *env, int keycode)
+{
+	if (keycode == 40)
+		env->it_max += 5;
+	else if (keycode == 46)
+		env->it_max -= 5;
+	draw_frct(env);
+}
+
 int		aff_key(int keycode, t_env *env)
 {
 	ft_putstr("touche : ");
@@ -40,44 +58,34 @@ int		aff_key(int keycode, t_env *env)
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode == 38 || keycode == 46)
-		draw_frct(env, keycode);
+		draw_frct(env);
+	if (keycode == 24 || keycode == 27)
+		zoom(env, keycode);
+	if (keycode == 40 || keycode == 46)
+		var_it(env, keycode);
 	return (0);
 }
 
 int		key_menu(int keycode, t_env *env)
 {
+	ft_putstr("touche : ");
+	ft_putnbr(keycode);
+	ft_putchar('\n');
+	if (keycode == 12 || keycode == 53)
+	{
+		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
+		exit(EXIT_SUCCESS);
+	}
 	if (keycode >= 123 && keycode <= 126)
 	{
-		mlx_clear_window(env->mlx, env->win_b);
-		if (keycode == 123)
-		{
-			mlx_string_put(env->mlx, env->win_b, 500, 200, WHI, "Julia");
-			env->menu = 1;
-		}
-		if (keycode == 124)
-		{
-			mlx_string_put(env->mlx, env->win_b, 500, 250, WHI, "Mandelbrot");
-			env->menu = 2;
-		}
+		mlx_destroy_window(env->mlx, env->win_b);
+		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
+		prp_win(env);
+		ft_mandelbrot(env);
+		mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
 	}
+		//chose_fractal(env, keycode);
 	if (keycode == 36)
-	{
-		if (env->menu == 1)
-		{
-			mlx_destroy_window(env->mlx, env->win_b);
-			prp_win(env);
-			Julia(env);
-			mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
-		}
-		else if (env->menu == 2)
-		{
-			mlx_destroy_window(env->mlx, env->win_b);
-			prp_win(env);
-			Mandelbrot(env);
-			mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
-		}
-		else
-			mlx_string_put(env->mlx, env->win_b, 300, 400, WHI, "Veuillez choisir une fractal");
-	}
+		menu_enter(env);
 	return (0);
 }
