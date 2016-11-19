@@ -14,7 +14,7 @@
 # define FRACTOL_H
 
 # define W_X		800
-# define W_Y		500
+# define W_Y		650
 
 # define BLACK		0x000000
 # define WHI		0xFFFFFF
@@ -70,14 +70,22 @@ typedef struct	s_env
 	double	zr;
 	double	zi;
 
+	double	var_zr;
+	double	var_zi;
+
 	int		zoom;
-	int		it_max;
-	int		it_sup;
+	double	it_max;
+	double	it_sup;
 
 	t_img	*img;
 	double	r;
 	double	g;
 	double	b;
+
+	int		rand;
+	int		red;
+	int		green;
+	int		blue;
 }				t_env;
 
 int				ft_init_struct(t_env **env);
@@ -94,9 +102,18 @@ void			write_title1(t_env *env);
 void			write_title2(t_env *env);
 void			aff_help(t_env *env);
 
-void			ft_mandelbrot(t_env *env);
-void			ft_julia(t_env *env);
+double  		maptoimaginary(int y, int img_y, double mini, double maxi);
+double  		maptoreal(int x, int img_x, double minr, double maxr);
 
+void			ft_mandelbrot(t_env *env);
+int     		findmandelbrot(t_env *env);
+
+void			ft_julia(t_env *env);
+int     		findjulia(t_env *env);
+
+void 			ft_newton(t_env *env);
+
+int				ft_chose_color(t_env *env);
 void			ft_pixel(t_env *env, int x, int y);
 void			ft_pixel2(t_env *env, int x, int y);
 void			ft_pixel3(t_env *env, int x, int y);
@@ -105,5 +122,7 @@ void			ft_pixel5(t_env *env, int x, int y);
 
 void			chose_fractal(t_env *env, int keycode);
 void			menu_enter(t_env *env);
+
+void			ft_get_color(t_env *env, double z1, double z2);
 
 #endif

@@ -6,19 +6,53 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 16:38:23 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/17 16:38:27 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/18 12:51:15 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-void	ft_pixel2(t_env *env, int x, int y)
+int		ft_chose_color(t_env *env)
 {
-	if (x > 0 && x < W_X && y > 0 && y < W_Y)
+	if (env->r == 255)
 	{
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = 185;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = 128;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = 41;
+		env->r = 0;
+		env->g = 0;
+		env->b = 255;
+	}
+	else if (env->g == 255)
+	{
+		env->r = 255;
+		env->g = 0;
+		env->b = 0;
+	}
+	else if (env->b == 255)
+	{
+		env->r = 0;
+		env->g = 255;
+		env->b = 0;
+	}
+	return (1);
+}
+
+void	ft_get_color(t_env *env, double z1, double z2)
+{
+	int	z;
+
+	if (z1 > z2)
+		z = z1 - ((z1 - z2) / 2);
+	else if (z1 < z2)
+		z = z2 - ((z1 - z2) / 2);
+	else
+		z = z1;
+	env->r = ((z + env->rand + env->red) % 255);
+	env->g = ((z + env->rand + env->green) % 255);
+	env->b = ((z + env->rand + env->blue) % 255);
+	if (z1 == z2)
+	{
+		env->r = 1;
+		env->g = 1;
+		env->b = 1;
 	}
 }
 
@@ -26,38 +60,8 @@ void	ft_pixel(t_env *env, int x, int y)
 {
 	if (x > 0 && x < W_X && y > 0 && y < W_Y)
 	{
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = 0;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = 0;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = 0;
-	}
-}
-
-void	ft_pixel3(t_env *env, int x, int y)
-{
-	if (x > 0 && x < W_X && y > 0 && y < W_Y)
-	{
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = 200;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = 200;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = 200;
-	}
-}
-
-void	ft_pixel4(t_env *env, int x, int y)
-{
-	if (x > 0 && x < W_X && y > 0 && y < W_Y)
-	{
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = 220;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = 220;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = 220;
-	}
-}
-
-void	ft_pixel5(t_env *env, int x, int y)
-{
-	if (x > 0 && x < W_X && y > 0 && y < W_Y)
-	{
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = 255;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = 255;
-		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = 255;
+		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y))] = env->b;
+		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = env->g;
+		env->img->bits_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = env->r;
 	}
 }

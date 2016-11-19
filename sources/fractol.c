@@ -19,8 +19,12 @@ int		ft_init_struct(t_env **env)
 	(*env)->s_win = NULL;
 	if (!((*env)->img = (t_img*)malloc(sizeof(t_img))))
 		return (0);
-	(*env)->zoom = 200;
+	(*env)->zoom = 250;
 	(*env)->it_max = 50;
+	(*env)->rand = 30;
+	(*env)->red = 0;
+	(*env)->green = 0;
+	(*env)->blue = 0;
 	return (1);
 }
 
@@ -28,9 +32,11 @@ void	prp_win(t_env *env)
 {
 	env->win = mlx_new_window(env->mlx, W_X, W_Y, "Fract_ol");
 	env->img = malloc(sizeof(t_img));
-	env->img->ptr_img = mlx_new_image(env->mlx, 1200, 700);
+	env->img->ptr_img = mlx_new_image(env->mlx, 800, 650);
 	env->img->bits_img = mlx_get_data_addr(env->img->ptr_img, &(env->img->bpp),
 			&(env->img->size_line), &(env->img->end));
+	env->cr = 0.285;
+	env->ci = 0.01;
 	mlx_hook(env->win, 2, 0, aff_key, env);
 }
 
@@ -38,10 +44,14 @@ void	draw_frct(t_env *env)
 {
 	mlx_destroy_image(env->mlx, env->img->ptr_img);
 	env->img = malloc(sizeof(t_img));
-	env->img->ptr_img = mlx_new_image(env->mlx, 1200, 700);
+	env->img->ptr_img = mlx_new_image(env->mlx, 800, 650);
 	env->img->bits_img = mlx_get_data_addr(env->img->ptr_img, &(env->img->bpp),
 			&(env->img->size_line), &(env->img->end));
-	ft_mandelbrot(env);
+	//ft_newton(env);
+	//if (env->menu == 1)
+		ft_julia(env);
+	//else
+		//ft_mandelbrot(env);
 	mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
 }
 
