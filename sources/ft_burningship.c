@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_mandelbrot.c                                    :+:      :+:    :+:   */
+/*   ft_burningship.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/18 15:51:51 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/19 17:53:42 by vcaquant         ###   ########.fr       */
+/*   Created: 2016/11/19 22:47:31 by vcaquant          #+#    #+#             */
+/*   Updated: 2016/11/19 22:47:33 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-int		findmandelbrot(t_env *env, int x, int y)
+float	ft_fabs(float f)
+{
+	f = (f < 0 ? -f : f);
+	return (f);
+}
+
+int		findburningship(t_env *env, int x, int y)
 {
 	double	tmp;
 	int		i;
 
 	i = 0;
+	env->cr = 1.5 * (x - W_X / 2) / (0.5 * env->zoom * W_X)
+		+ (env->x / W_X / 1.32) - 0.5;
+	env->ci = (y - W_Y / 2) / (0.5 * env->zoom * W_Y) - (env->y / W_Y / 1.97);
 	env->zr = 0 + env->var_zr;
 	env->zi = 0 + env->var_zi;
-	env->cr = 1.5 * (x - W_X / 2) / (0.5 * env->zoom * W_X)
-		+ (env->x / W_X / 1.37) - 0.5;
-	env->ci = (y - W_Y / 2) / (0.5 * env->zoom * W_Y) - (env->y / W_Y / 1.92);
-	while ((env->zr * env->zr + env->zi * env->zi) < 4 &&
-			i < env->it_max)
+	while (env->zr * env->zr * env->zi * env->zi <= 4 && i < env->it_max)
 	{
-		tmp = env->zr * env->zr - env->zi * env->zi + env->cr;
-		env->zi = 2 * env->zi * env->zr + env->ci;
-		env->zr = tmp;
+		tmp = env->zr;
+		env->zr = ft_fabs(tmp * tmp) - env->zi * env->zi + env->cr;
+		env->zi = 2 * ft_fabs(tmp * env->zi) + env->ci;
 		i++;
 	}
 	return (i);
 }
 
-void	ft_mandelbrot(t_env *env)
+void	ft_burningship(t_env *env)
 {
 	int		x;
 	int		y;
@@ -42,11 +47,11 @@ void	ft_mandelbrot(t_env *env)
 	int		i;
 	int		color;
 
-	env->x1 = -2.1;
-	env->x2 = 0.6;
-	env->y1 = -1.2;
-	env->y2 = 1.2;
-	i = env->it_max / 2;
+	env->x1 = -2;
+	env->x2 = 1.2;
+	env->y1 = -2;
+	env->y2 = 1;
+	i = env->it_max / 2.5;
 	y = 0;
 	while (y < W_Y)
 	{
@@ -55,9 +60,9 @@ void	ft_mandelbrot(t_env *env)
 		{
 			env->cr = maptoreal(env, x);
 			env->ci = maptoimaginary(env, y);
-			n = findmandelbrot(env, x, y);
+			n = findburningship(env, x, y);
 			color = ((255 - n * env->r) << 16) + ((255 - i * env->g) << 8) + (255 - i * env->b);
-			ft_get_color(env, n, env->it_max);
+			//ft_get_color(env, n, env->it_max);
 			ft_pixel(env, x, y, color);
 			x++;
 		}

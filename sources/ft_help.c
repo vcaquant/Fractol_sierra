@@ -6,7 +6,7 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 18:25:49 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/15 18:25:53 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/19 23:04:46 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ int		aff_help_exit(int keycode, t_env *env)
 void	write_command(t_env *env)
 {
 	mlx_string_put(env->mlx, env->s_win, 0, 105, WHI,
-		"> = Deplacement de la map vers la droite");
+		"M = activation du mouvement avec la souris");
 	mlx_string_put(env->mlx, env->s_win, 0, 120, WHI,
 		"< = Deplacement de la map vers la gauche");
 	mlx_string_put(env->mlx, env->s_win, 0, 135, WHI,
 		"^ = Deplacement de la map vers le haut");
 	mlx_string_put(env->mlx, env->s_win, 0, 150, WHI,
 		"v = Deplacement de la map vers le bas");
-	mlx_string_put(env->mlx, env->s_win, 0, 215, WHI, "+ = Zoom");
-	mlx_string_put(env->mlx, env->s_win, 0, 230, WHI, "- = Dezoom");
+	mlx_string_put(env->mlx, env->s_win, 0, 215, WHI,
+			"+ = Augmentation de l'iteration");
+	mlx_string_put(env->mlx, env->s_win, 0, 230, WHI,
+			"- = Diminution de l'iteration");
 	mlx_string_put(env->mlx, env->s_win, 0, 295, WHI,
 		"K = Augmentation des Z");
 	mlx_string_put(env->mlx, env->s_win, 0, 310, WHI, "M = Diminution des Z");
@@ -44,16 +46,16 @@ void	write_command(t_env *env)
 
 void	write_title1(t_env *env)
 {
-	mlx_string_put(env->mlx, env->s_win, 0, 0, ABSINTHE,
+	mlx_string_put(env->mlx, env->s_win, 0, 0, ABS,
 		" ===========================================");
-	mlx_string_put(env->mlx, env->s_win, 0, 15, ABSINTHE,
+	mlx_string_put(env->mlx, env->s_win, 0, 15, ABS,
 		"|                    HELP                   |");
-	mlx_string_put(env->mlx, env->s_win, 0, 30, ABSINTHE,
+	mlx_string_put(env->mlx, env->s_win, 0, 30, ABS,
 		" ===========================================");
 	mlx_string_put(env->mlx, env->s_win, 0, 60, AZUR,
 		" ===================================");
 	mlx_string_put(env->mlx, env->s_win, 0, 75, AZUR,
-		"|           Deplacements            |");
+		"|            Variations             |");
 	mlx_string_put(env->mlx, env->s_win, 0, 90, AZUR,
 		" ===================================");
 }
@@ -63,7 +65,7 @@ void	write_title2(t_env *env)
 	mlx_string_put(env->mlx, env->s_win, 0, 170, AZUR,
 		" ===================================");
 	mlx_string_put(env->mlx, env->s_win, 0, 185, AZUR,
-		"|               Zoom                |");
+		"|       Variations Iterations       |");
 	mlx_string_put(env->mlx, env->s_win, 0, 200, AZUR,
 		" ===================================");
 	mlx_string_put(env->mlx, env->s_win, 0, 250, AZUR,

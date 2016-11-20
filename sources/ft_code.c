@@ -6,7 +6,7 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 18:20:51 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/15 18:20:56 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/19 22:47:57 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,73 +36,6 @@ void	zoom(t_env *env, int keycode)
 	draw_frct(env);
 }
 
-void	var_it(t_env *env, int keycode)
-{
-	if (env->menu == 1)
-	{
-		if (keycode == 40)
-			env->it_max += 2.5;
-		else if (keycode == 46)
-			env->it_max -= 2.5;
-	}
-	else
-	{
-		if (keycode == 40)
-			env->it_max += 2;
-		else if (keycode == 46)
-			env->it_max -= 2;
-	}
-	draw_frct(env);
-}
-
-void 	var_c(t_env *env, int key)
-{
-	if (key == 17)
-	{
-		env->cr += 0.1;
-		draw_frct(env);
-	}
-	if (key == 5)
-	{
-		env->cr -= 0.1;
-		draw_frct(env);
-	}
-	if (key == 3)
-	{
-		env->ci += 0.1;
-		draw_frct(env);
-	}
-	if (key == 38)
-	{
-		env->ci -= 0.1;
-		draw_frct(env);
-	}
-}
-
-void 	var_z(t_env *env, int key)
-{
-	if (key == 17)
-	{
-		env->var_zr += 0.1;
-		draw_frct(env);
-	}
-	if (key == 5)
-	{
-		env->var_zr -= 0.1;
-		draw_frct(env);
-	}
-	if (key == 3)
-	{
-		env->var_zi += 0.1;
-		draw_frct(env);
-	}
-	if (key == 38)
-	{
-		env->var_zi -= 0.1;
-		draw_frct(env);
-	}
-}
-
 int		aff_key(int keycode, t_env *env)
 {
 	ft_putstr("touche : ");
@@ -115,18 +48,39 @@ int		aff_key(int keycode, t_env *env)
 		ft_putstr("\033[0;32m✔︎ Fract_ol Closed\033[0m\n");
 		exit(EXIT_SUCCESS);
 	}
-	//if (keycode == 38 || keycode == 46)
-	//	draw_frct(env);
 	if (keycode == 24 || keycode == 27)
-		zoom(env, keycode);
-	if (keycode == 40 || keycode == 46)
 		var_it(env, keycode);
-	if (keycode == 17 || keycode == 5 || keycode == 3 || keycode == 38)
+	if (keycode == 15 || keycode == 5 || keycode == 11)
+		ft_chose_color(env, keycode);
+	if (keycode == 46)
+	{
+		if (env->move == 0)
+			env->move++;
+		else
+			env->move--;
+	}
+	return (0);
+}
+
+int		mouse_move(int x, int y, t_env *env)
+{
+	if (env->move == 1)
 	{
 		if (env->menu == 1)
-			var_c(env, keycode);
-		else
-			var_z(env, keycode);
+		{
+			x -= W_X / 2;
+			y -= W_Y / 2;
+			env->cr = ((float)x / W_X) * 2;
+			env->ci = ((float)y / W_Y) * 2;
+		}
+		else if (env->menu == 2 || env->menu == 3)
+		{
+			x -= W_X / 2;
+			y -= W_Y / 2;
+			env->var_zr = ((float)x / W_X) * 2;
+			env->var_zi = ((float)y / W_Y) * 2;
+		}
+		draw_frct(env);
 	}
 	return (0);
 }
@@ -142,13 +96,6 @@ int		key_menu(int keycode, t_env *env)
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode >= 123 && keycode <= 126)
-	/*{
-		mlx_destroy_window(env->mlx, env->win_b);
-		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
-		prp_win(env);
-		ft_mandelbrot(env);
-		mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
-	}*/
 		chose_fractal(env, keycode);
 	if (keycode == 36)
 		menu_enter(env);

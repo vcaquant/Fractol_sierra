@@ -16,9 +16,10 @@ SRC = 			sources/fractol.c \
 				sources/fractal.c \
 				sources/ft_mandelbrot.c \
 				sources/ft_julia.c \
-				sources/ft_newton.c \
+				sources/ft_burningship.c \
 				sources/ft_put_pixel.c \
 				sources/ft_code.c \
+				sources/ft_variation.c \
 				sources/ft_help.c \
 				sources/ft_menu.c
 
@@ -26,9 +27,10 @@ OBJ = 			fractol.o \
 				fractal.o \
 				ft_mandelbrot.o \
 				ft_julia.o \
-				ft_newton.o \
+				ft_burningship.o \
 				ft_put_pixel.o \
 				ft_code.o \
+				ft_variation.o \
 				ft_help.o \
 				ft_menu.o
 

@@ -15,43 +15,42 @@
 void	chose_fractal(t_env *env, int keycode)
 {
 	mlx_clear_window(env->mlx, env->win_b);
-	if (keycode == 126)
+	if (keycode == 125)
 	{
 		env->menu++;
-		if (env->menu == 3)
+		if (env->menu >= 4)
 			env->menu = 1;
 		if (env->menu == 1)
 			mlx_string_put(env->mlx, env->win_b, 380, 100, RED, "Julia");
 		else if (env->menu == 2)
 			mlx_string_put(env->mlx, env->win_b, 380, 150, A_F, "Mandelbrot");
-		menu_enter(env);
+		else if (env->menu == 3)
+			mlx_string_put(env->mlx, env->win_b, 380, 200, ABS, "Burning ship");
 	}
-	if (keycode == 125)
+	if (keycode == 126)
 	{
 		env->menu--;
-		if (env->menu == 0)
-			env->menu = 2;
+		if (env->menu <= 0)
+			env->menu = 3;
 		if (env->menu == 1)
 			mlx_string_put(env->mlx, env->win_b, 380, 100, RED, "Julia");
 		else if (env->menu == 2)
 			mlx_string_put(env->mlx, env->win_b, 380, 150, A_F, "Mandelbrot");
+		else if (env->menu == 3)
+			mlx_string_put(env->mlx, env->win_b, 380, 200, ABS, "Burning ship");
 	}
 }
 
 void	menu_enter(t_env *env)
 {
-	//if (env->menu == 1)
-	//{
+	if (env->menu == 1)
+	{
 		mlx_destroy_window(env->mlx, env->win_b);
 		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
 		prp_win(env);
-		//ft_newton(env);
-		env->menu = 1;
-
 		ft_julia(env);
-		//ft_mandelbrot(env);
 		mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
-	/*}
+	}
 	else if (env->menu == 2)
 	{
 		mlx_destroy_window(env->mlx, env->win_b);
@@ -59,5 +58,13 @@ void	menu_enter(t_env *env)
 		prp_win(env);
 		ft_mandelbrot(env);
 		mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
-	}*/
+	}
+	else if (env->menu == 3)
+	{
+		mlx_destroy_window(env->mlx, env->win_b);
+		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
+		prp_win(env);
+		ft_burningship(env);
+		mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
+	}
 }
