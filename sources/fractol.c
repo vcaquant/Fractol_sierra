@@ -36,9 +36,9 @@ int		ft_init_struct(t_env **env)
 	(*env)->modul_r = 255;
 	(*env)->modul_g = 255;
 	(*env)->modul_b = 255;
-	(*env)->r = 6;
-	(*env)->g = 2;
-	(*env)->b = 10;
+	(*env)->r = 16;
+	(*env)->g = 12;
+	(*env)->b = 20;
 	(*env)->move = 0;
 	return (1);
 }
@@ -49,12 +49,12 @@ int		mouse_hook(int button, int x, int y, t_env *env)
 	y -= W_Y / 2;
 	if (button == 5)
 	{
-		env->zoom *= 1.1;
+		env->zoom *= 2.1;
 		env->x += (float)x / env->zoom / 2.51;
 		env->y -= (float)y / env->zoom / 2.51;
 	}
-	else if (button == 4 && env->zoom > 1)
-		env->zoom /= 1.1;
+	else if (button == 4 && env->zoom > 2)
+		env->zoom /= 2.1;
 	if (button == 4 || button == 5)
 		draw_frct(env);
 	return (0);
