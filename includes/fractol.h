@@ -6,7 +6,7 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:51:26 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/19 23:05:41 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:24:34 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,9 @@
 
 # include "../libft/libft.h"
 # include "../libft/get_next_line.h"
-# include "../minilibx_macos/mlx.h"
 # include "../minilibx_macos sierra/mlx.h"
 
-# include <math.h>
-# include <fcntl.h>
-# include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <sys/uio.h>
-# include <sys/types.h>
 
 typedef struct	s_img
 {
@@ -65,8 +58,6 @@ typedef struct	s_env
 	double	x2;
 	double	y1;
 	double	y2;
-	double	img_x;
-	double	img_y;
 
 	double	cr;
 	double	ci;
@@ -78,32 +69,37 @@ typedef struct	s_env
 
 	int		zoom;
 	double	it_max;
-	double	it_sup;
 
 	t_img	*img;
-	int	r;
-	int	g;
-	int	b;
-
-	int		rand;
-	int		red;
-	int		green;
-	int		blue;
-	int		modul_r;
-	int		modul_g;
-	int		modul_b;
+	int		r;
+	int		g;
+	int		b;
 
 	int		move;
 }				t_env;
 
 int				ft_init_struct(t_env **env);
+void			init_var(t_env *env);
+
 void			prp_win(t_env *env);
-void			draw_frct(t_env *env);
+void			exc_param(t_env *env, char av);
+int				ft_param(void);
+int				red_cross(void);
 
 void			too_much_help(t_env *env);
 int				aff_key(int keycode, t_env *env);
+void			act_move(t_env *env);
+void			move(t_env *env, int keycode);
+void			zoom(t_env *env, int keycode);
+
+void			menu(t_env *env);
 int				key_menu(int keycode, t_env *env);
+void			menu_enter(t_env *env);
+void			chose_fractal(t_env *env, int keycode);
+void			close_win_open_menu(t_env *env);
+
 int				mouse_move(int x, int y, t_env *env);
+int				mouse_hook(int button, int x, int y, t_env *env);
 
 int				aff_help_exit(int keycode, t_env *env);
 void			write_command(t_env *env);
@@ -121,16 +117,14 @@ void			ft_julia(t_env *env);
 int				findjulia(t_env *env);
 
 void			ft_burningship(t_env *env);
+int				findburningship(t_env *env, int x, int y);
+float			ft_fabs(float f);
 
 void			ft_chose_color(t_env *env, int key);
+void			ft_change_color(t_env *env);
 void			ft_pixel(t_env *env, int x, int y, int color);
-void			ft_get_color(t_env *env, double z1, double z2);
+void			draw_frct(t_env *env);
 
-void			chose_fractal(t_env *env, int keycode);
-void			menu_enter(t_env *env);
-
-void			var_z(t_env *env, int keycode);
-void			var_c(t_env *env, int keycode);
 void			var_it(t_env *env, int keycode);
 
 #endif

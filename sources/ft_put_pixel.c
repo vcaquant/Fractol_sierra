@@ -6,7 +6,7 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/17 16:38:23 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/19 17:48:24 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/21 09:11:26 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,45 @@ void	ft_chose_color(t_env *env, int key)
 {
 	if (key == 15)
 	{
-		if (env->modul_r > 5)
-			env->modul_r -= 5;
+		env->r = 90;
+		env->g = 255;
+		env->b = 255;
+		draw_frct(env);
 	}
-	else if (key == 5)
+	if (key == 5)
 	{
-		if (env->modul_g > 5)
-			env->modul_g -= 5;
+		env->r = 255;
+		env->g = 90;
+		env->b = 255;
+		draw_frct(env);
 	}
-	else if (key == 11)
+	if (key == 11)
 	{
-		if (env->modul_b > 5)
-			env->modul_b -= 5;
+		env->r = 255;
+		env->g = 255;
+		env->b = 90;
+		draw_frct(env);
 	}
-	else if (env->modul_r == 5 && env->modul_g == 5 && env->modul_b == 5)
-	{
-		env->modul_r = 255;
-		env->modul_g = 255;
-		env->modul_b = 255;
-	}
-	draw_frct(env);
 }
 
-void	ft_get_color(t_env *env, double z1, double z2)
+void	ft_change_color(t_env *env)
 {
-	int	z;
-
-	if (z1 > z2)
-		z = z1 - ((z1 - z2) / 2);
-	else if (z1 < z2)
-		z = z2 - ((z2 - z1) / 2);
-	else
-		z = z1;
-	env->r = ((z + env->rand + env->red) % env->modul_r);
-	env->g = ((z + env->rand + env->green) % env->modul_g);
-	env->b = ((z + env->rand + env->blue) % env->modul_b);
+	if (env->g == 90)
+	{
+		env->r -= 10;
+		env->b -= 15;
+	}
+	if (env->r == 90)
+	{
+		env->g -= 10;
+		env->b -= 15;
+	}
+	if (env->b == 90)
+	{
+		env->r -= 10;
+		env->g -= 15;
+	}
+	draw_frct(env);
 }
 
 void	ft_pixel(t_env *env, int x, int y, int color)
@@ -58,19 +62,33 @@ void	ft_pixel(t_env *env, int x, int y, int color)
 	int		r;
 	int		g;
 	int		b;
-	/*if (x > 0 && x < W_X && y > 0 && y < W_Y)
-	{
-		env->img->bts_img[(4 * (x + env->img->size_line / 4 * y))] = env->b;
-		env->img->bts_img[(4 * (x + env->img->size_line / 4 * y)) + 1] = env->g;
-		env->img->bts_img[(4 * (x + env->img->size_line / 4 * y)) + 2] = env->r;
-	}*/
+
 	r = (color & 0xFF0000) >> 16;
 	g = (color & 0xFF00) >> 8;
 	b = (color & 0xFF);
 	if (y >= 0 && x >= 0 && y < W_Y && x < W_X)
 	{
-		env->img->bts_img[(y * env->img->size_line) + ((env->img->bpp / 8) * x) + 2] = r;
-		env->img->bts_img[(y * env->img->size_line) + ((env->img->bpp / 8) * x) + 1] = g;
-		env->img->bts_img[(y * env->img->size_line) + ((env->img->bpp / 8) * x)] = b;
+		env->img->bts_img[(y * env->img->size_line) +
+			((env->img->bpp / 8) * x) + 2] = r;
+		env->img->bts_img[(y * env->img->size_line) +
+			((env->img->bpp / 8) * x) + 1] = g;
+		env->img->bts_img[(y * env->img->size_line) +
+			((env->img->bpp / 8) * x)] = b;
 	}
+}
+
+void	draw_frct(t_env *env)
+{
+	mlx_destroy_image(env->mlx, env->img->ptr_img);
+	env->img = malloc(sizeof(t_img));
+	env->img->ptr_img = mlx_new_image(env->mlx, W_X, W_Y);
+	env->img->bts_img = mlx_get_data_addr(env->img->ptr_img, &(env->img->bpp),
+			&(env->img->size_line), &(env->img->end));
+	if (env->menu == 1)
+		ft_julia(env);
+	else if (env->menu == 2)
+		ft_mandelbrot(env);
+	else
+		ft_burningship(env);
+	mlx_put_image_to_window(env->mlx, env->win, env->img->ptr_img, 0, 0);
 }

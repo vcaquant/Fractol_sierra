@@ -6,7 +6,7 @@
 /*   By: vcaquant <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 18:20:51 by vcaquant          #+#    #+#             */
-/*   Updated: 2016/11/19 22:47:57 by vcaquant         ###   ########.fr       */
+/*   Updated: 2016/11/21 10:55:41 by vcaquant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,31 @@ void	zoom(t_env *env, int keycode)
 	draw_frct(env);
 }
 
+void	move(t_env *env, int keycode)
+{
+	if (keycode == 126)
+		env->y -= 50 / env->zoom;
+	else if (keycode == 125)
+		env->y += 50 / env->zoom;
+	else if (keycode == 123)
+		env->x += 50 / env->zoom;
+	else if (keycode == 124)
+		env->x -= 50 / env->zoom;
+	draw_frct(env);
+}
+
+void	act_move(t_env *env)
+{
+	if (env->move == 0)
+		env->move++;
+	else
+		env->move--;
+}
+
 int		aff_key(int keycode, t_env *env)
 {
-	ft_putstr("touche : ");
-	ft_putnbr(keycode);
-	ft_putchar('\n');
+	if (keycode == 126 || keycode == 125 || keycode == 123 || keycode == 124)
+		move(env, keycode);
 	if (keycode == 4)
 		too_much_help(env);
 	if (keycode == 12 || keycode == 53)
@@ -48,56 +68,20 @@ int		aff_key(int keycode, t_env *env)
 		ft_putstr("\033[0;32m✔︎ Fract_ol Closed\033[0m\n");
 		exit(EXIT_SUCCESS);
 	}
-	if (keycode == 24 || keycode == 27)
-		var_it(env, keycode);
 	if (keycode == 15 || keycode == 5 || keycode == 11)
 		ft_chose_color(env, keycode);
+	if (keycode == 8)
+		ft_change_color(env);
+	if (keycode == 24 || keycode == 27)
+		var_it(env, keycode);
 	if (keycode == 46)
+		act_move(env);
+	if (keycode == 29)
 	{
-		if (env->move == 0)
-			env->move++;
-		else
-			env->move--;
-	}
-	return (0);
-}
-
-int		mouse_move(int x, int y, t_env *env)
-{
-	if (env->move == 1)
-	{
-		if (env->menu == 1)
-		{
-			x -= W_X / 2;
-			y -= W_Y / 2;
-			env->cr = ((float)x / W_X) * 2;
-			env->ci = ((float)y / W_Y) * 2;
-		}
-		else if (env->menu == 2 || env->menu == 3)
-		{
-			x -= W_X / 2;
-			y -= W_Y / 2;
-			env->var_zr = ((float)x / W_X) * 2;
-			env->var_zi = ((float)y / W_Y) * 2;
-		}
+		init_var(env);
 		draw_frct(env);
 	}
-	return (0);
-}
-
-int		key_menu(int keycode, t_env *env)
-{
-	ft_putstr("touche : ");
-	ft_putnbr(keycode);
-	ft_putchar('\n');
-	if (keycode == 12 || keycode == 53)
-	{
-		ft_putstr("\033[0;32m✔︎ Menu Closed\033[0m\n");
-		exit(EXIT_SUCCESS);
-	}
-	if (keycode >= 123 && keycode <= 126)
-		chose_fractal(env, keycode);
-	if (keycode == 36)
-		menu_enter(env);
+	if (keycode == 3)
+		close_win_open_menu(env);
 	return (0);
 }

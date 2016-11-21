@@ -91,7 +91,7 @@ all: $(NAME)
 
 $(NAME):
 	@$(CC) $(CFLAGS) $(SRC) -I $(INC) 
-	@ar r $(NAME) $(OBJ_NAME)
+	@ar rc $(NAME) $(OBJ_NAME)
 	@ranlib $(NAME)
 
 clean:

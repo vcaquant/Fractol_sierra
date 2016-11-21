@@ -13,23 +13,27 @@
 NAME = 			fractol
 
 SRC = 			sources/fractol.c \
+				sources/init.c \
 				sources/fractal.c \
 				sources/ft_mandelbrot.c \
 				sources/ft_julia.c \
 				sources/ft_burningship.c \
 				sources/ft_put_pixel.c \
 				sources/ft_code.c \
+				sources/mouse.c \
 				sources/ft_variation.c \
 				sources/ft_help.c \
 				sources/ft_menu.c
 
 OBJ = 			fractol.o \
+				init.o \
 				fractal.o \
 				ft_mandelbrot.o \
 				ft_julia.o \
 				ft_burningship.o \
 				ft_put_pixel.o \
 				ft_code.o \
+				mouse.o \
 				ft_variation.o \
 				ft_help.o \
 				ft_menu.o
